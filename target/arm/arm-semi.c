@@ -600,6 +600,13 @@ target_ulong do_arm_semihosting(CPUARMState *env)
             retvals[1] = limit;
             retvals[2] = limit; /* Stack base */
             retvals[3] = 0; /* Stack limit.  */
+
+            uint64_t ram_start = semihosting_get_ram_start();
+            if (ram_start != 0) {
+                retvals[0] = ram_start;
+                retvals[1] = ram_start + limit;
+                retvals[2] = ram_start + limit;
+            }
 #endif
 
             for (i = 0; i < ARRAY_SIZE(retvals); i++) {

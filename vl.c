@@ -510,6 +510,10 @@ static QemuOptsList qemu_semihosting_config_opts = {
             .name = "target",
             .type = QEMU_OPT_STRING,
         }, {
+            .name = "ram_start",
+            .type = QEMU_OPT_NUMBER,
+        }, {
+        }, {
             .name = "arg",
             .type = QEMU_OPT_STRING,
         },
@@ -1283,6 +1287,7 @@ typedef struct SemihostingConfig {
     const char **argv;
     int argc;
     const char *cmdline; /* concatenated argv */
+    uint64_t ram_start;
 } SemihostingConfig;
 
 static SemihostingConfig semihosting;
@@ -1295,6 +1300,11 @@ bool semihosting_enabled(void)
 SemihostingTarget semihosting_get_target(void)
 {
     return semihosting.target;
+}
+
+uint64_t semihosting_get_ram_start(void)
+{
+    return semihosting.ram_start;
 }
 
 const char *semihosting_get_arg(int i)
@@ -3727,6 +3737,7 @@ int main(int argc, char **argv, char **envp)
                     } else {
                         semihosting.target = SEMIHOSTING_TARGET_AUTO;
                     }
+                    semihosting.ram_start = qemu_opt_get_number(opts, "ram_start", 0);
                     /* Set semihosting argument count and vector */
                     qemu_opt_foreach(opts, add_semihosting_arg,
                                      &semihosting, NULL);

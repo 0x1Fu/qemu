@@ -54,6 +54,7 @@ static inline const char *semihosting_get_cmdline(void)
 #else
 bool semihosting_enabled(void);
 SemihostingTarget semihosting_get_target(void);
+uint64_t semihosting_get_ram_start(void);
 const char *semihosting_get_arg(int i);
 int semihosting_get_argc(void);
 const char *semihosting_get_cmdline(void);
