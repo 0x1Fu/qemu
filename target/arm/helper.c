@@ -12323,6 +12323,9 @@ uint32_t HELPER(crc32c)(uint32_t acc, uint32_t val, uint32_t bytes)
  */
 static inline int fp_exception_el(CPUARMState *env)
 {
+    if (semihosting_enabled())
+        return 0;
+
 #ifndef CONFIG_USER_ONLY
     int fpen;
     int cur_el = arm_current_el(env);
